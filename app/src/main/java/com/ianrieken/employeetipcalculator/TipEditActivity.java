@@ -34,8 +34,6 @@ import java.util.List;
 
 public class TipEditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    // Test change in github
-
     private final String LOG_TAG = this.getClass().getSimpleName();
 
     static final ArrayList<AddedEmployee> addedEmployees = new ArrayList<AddedEmployee>();
@@ -105,13 +103,10 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         addEmployeeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkInputName() && checkInputHours()) {
-                    addedEmployees.add(getAddedEmployee(addEmployeeTextView.getText().toString(), addEmployeeTime.getText().toString()));
-                    addedEmployeeListView.invalidateViews();
-                    //TODO check whether the employee is already in the list (preferably also remove the name from the shortlist)
-                    //TODO check whether the entered time is in the right format
-                    resetInputFields();
-                }
+                addEmployee();
+
+                //TODO remove
+                /*--
                 if(addEmployeeTime.getText().toString().equals("")) {
                     Log.v(LOG_TAG, "No amount of hours entered");
                     if(addedEmployees.size() == 0) {
@@ -124,6 +119,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
                     }
 
                 }
+                --*/
             }
         });
 
@@ -250,6 +246,16 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         return employee;
     }
 
+    private void addEmployee() {
+        if (checkInputName() && checkInputHours()) {
+            addedEmployees.add(getAddedEmployee(addEmployeeTextView.getText().toString(), addEmployeeTime.getText().toString()));
+            addedEmployeeListView.invalidateViews();
+            //TODO check whether the employee is already in the list (preferably also remove the name from the shortlist)
+            //TODO check whether the entered time is in the right format
+            resetInputFields();
+        }
+    }
+
     //TODO remove?
     private double getNumericHour(String hoursInput) {
 
@@ -358,11 +364,52 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     private boolean checkInputName() {
-        return false;
+        if(addEmployeeTextView.getText().toString().equals("")) {
+            //TODO show dialog
+            Log.v(LOG_TAG, "No employee name entered, not adding to the list");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private boolean checkInputHours() {
-        return false;
+        if (addEmployeeTime.getText().toString().equals("")) {
+            if(addEmployeeTime.getVisibility() == View.INVISIBLE) {
+                return true;
+            } else {
+                Log.v(LOG_TAG, "No amount of hours entered");
+                if(addedEmployees.size() == 0) {
+                    showNoHoursConfirmationDialog();
+                } else {
+                    //TODO make option to delete all registered hours
+                    showHoursRequiredDialog();
+                }
+                return false;
+            }
+        } else if (addEmployeeTime.getText().toString().contains(":")) {
+            String[] hoursSeperated = addEmployeeTime.getText().toString().split(":");
+            if (hoursSeperated.length == 2) {
+                Log.v(LOG_TAG, "Hours seperated into " + hoursSeperated[0] + " and " + hoursSeperated[1]);
+                if(hoursSeperated[0].length() > 0 && hoursSeperated[1].length() == 2) {
+                    if(Integer.valueOf(hoursSeperated[1]) < 60){
+                        return true;
+                    } else {
+                        Log.e(LOG_TAG, "Minutes should be max 59");
+                        return false;
+                    }
+                } else {
+                    Log.e(LOG_TAG, "Hours should at least 1 and minutes should be exactly 2 characters long");
+                    return false;
+                }
+            } else {
+                Log.e(LOG_TAG, "Input should only contain hours and minutes");
+                return false;
+            }
+        } else {
+            Log.v(LOG_TAG, "Only whole hours entered: " + addEmployeeTime.getText().toString());
+            return true;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -377,6 +424,9 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             public void onClick(DialogInterface dialog, int which) {
                 Log.v(LOG_TAG, "Positive button selected");
                 addEmployeeTime.setVisibility(View.INVISIBLE);
+
+                // After the hours input field has been made invisible, try again to add the employee
+                addEmployee();
             }
         });
         builder.setNegativeButton(R.string.alertdialog_no_hours_negative, new DialogInterface.OnClickListener() {
