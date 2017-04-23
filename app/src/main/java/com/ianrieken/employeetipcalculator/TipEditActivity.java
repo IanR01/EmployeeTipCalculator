@@ -238,9 +238,9 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
 
         Log.v(LOG_TAG, "Employee " + name + " does NOT exist yet");
 
+        //TODO Show a confirmation dialog before adding a new employee
         Uri newEmployee = insertEmployee(name, "", TipContract.EmployeeEntry.EMPLOYEE_ACTIVE);
         long id = ContentUris.parseId(newEmployee);
-        //TODO fix: a new employee should be created instead of returning one with id 0
         Log.v(LOG_TAG, "New employee added with id " + id);
         employee = new AddedEmployee(id, name, hours);
         return employee;
@@ -369,6 +369,12 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             Log.v(LOG_TAG, "No employee name entered, not adding to the list");
             return false;
         } else {
+            for(int i=0; i<addedEmployees.size(); i++) {
+                Log.v(LOG_TAG, "Compare array with textfield: " + addedEmployees.get(i).getName() + " and " + addEmployeeTextView.getText().toString());
+                if(addedEmployees.get(i).getName().toLowerCase().equals(addEmployeeTextView.getText().toString().toLowerCase())) {
+                    return false;
+                }
+            }
             return true;
         }
     }
