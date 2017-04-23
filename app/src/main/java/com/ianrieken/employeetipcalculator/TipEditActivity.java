@@ -318,6 +318,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         values.put(RegisterEntry.COLUMN_REGISTER_DATE, dateTextView.getText().toString());
         values.put(RegisterEntry.COLUMN_REGISTER_AMOUNT, tipAmountEditText.getText().toString());
         values.put(RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS, employeeids);
+        values.put(RegisterEntry.COLUMN_REGISTER_NREMPLOYEES, addedEmployees.size());
         values.put(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION, employeehours);
         values.put(RegisterEntry.COLUMN_REGISTER_ACTION, RegisterEntry.REGISTER_ACTION_TIP);
 
