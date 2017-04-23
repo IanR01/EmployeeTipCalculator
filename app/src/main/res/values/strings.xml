@@ -14,7 +14,8 @@
     <string name="amount_employees">personen</string>
 
     <!-- Tip edit activity -->
-    <string name="title_tip_edit">Invoeren</string>
+    <string name="title_tip_insert">Invoeren</string>
+    <string name="title_tip_edit">Bewerken</string>
     <string name="hint_tip_amount">0.00</string>
     <string name="hint_add_employee">Werknemer toevoegen…</string>
     <string name="hint_time">0:00</string>
@@ -25,6 +26,7 @@
     <string name="alertdialog_hours_required_button">OK</string>
     <string name="editor_insert_tip_failed">Fout bij registreren fooi</string>
     <string name="editor_insert_tip_successful">Fooi geregistreerd</string>
+    <string name="action_delete">Verwijderen</string>
 
     <!-- New payment activity -->
     <string name="title_payment_new">Nieuwe uitbetaling</string>

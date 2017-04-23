@@ -3,7 +3,9 @@ package com.ianrieken.employeetipcalculator;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -36,6 +38,8 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
 
     private final String LOG_TAG = this.getClass().getSimpleName();
 
+    private static final int EDIT_TIP_LOADER = 1;
+
     private Uri mCurrentTipUri;
 
     static final ArrayList<AddedEmployee> addedEmployees = new ArrayList<AddedEmployee>();
@@ -56,6 +60,14 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tip_edit);
 
+        Intent intent = getIntent();
+        mCurrentTipUri = intent.getData();
+
+        if (mCurrentTipUri != null) {
+            setTitle(getString(R.string.title_tip_edit));
+            getLoaderManager().initLoader(EDIT_TIP_LOADER, null, this);
+        }
+
         fillEmployeeLists();
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, activeEmployeesList);
@@ -73,6 +85,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
 
 
         final AddedEmployeeAdapter addedEmployeeAdapter = new AddedEmployeeAdapter(TipEditActivity.this, addedEmployees);
+        addedEmployeeAdapter.clear();
 
         addedEmployeeListView = (ListView) findViewById(R.id.added_employees_listview);
 
@@ -106,22 +119,6 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onClick(View v) {
                 addEmployee();
-
-                //TODO remove
-                /*--
-                if(addEmployeeTime.getText().toString().equals("")) {
-                    Log.v(LOG_TAG, "No amount of hours entered");
-                    if(addedEmployees.size() == 0) {
-                        showNoHoursConfirmationDialog();
-                    } else {
-                        //TODO make option to delete all registered hours
-                        if(addEmployeeTime.getVisibility() == View.VISIBLE) {
-                            showHoursRequiredDialog();
-                        }
-                    }
-
-                }
-                --*/
             }
         });
 
@@ -134,7 +131,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.employee_edit_menu, menu);
+        inflater.inflate(R.menu.tip_edit_menu, menu);
         return true;
     }
 
@@ -143,10 +140,24 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         switch (item.getItemId()) {
             case R.id.action_done:
                 Uri uri = insertTipRegistration();
+                finish();
                 return true;
+            case R.id.action_delete:
+                //TODO insert delete functionallity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        if (mCurrentTipUri == null) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
+            menuItem.setVisible(false);
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,12 +166,44 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        String[] projection = {
+                RegisterEntry._ID,
+                RegisterEntry.COLUMN_REGISTER_AMOUNT,
+                RegisterEntry.COLUMN_REGISTER_DATE,
+                RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS,
+                RegisterEntry.COLUMN_REGISTER_DISTRIBUTION
+        };
+        return new CursorLoader(this,
+                mCurrentTipUri,
+                projection,
+                null,
+                null,
+                null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor.moveToFirst()) {
+            int amountColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_AMOUNT);
+            int dateColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_DATE);
+            int employeeIdsColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS);
+            int namesColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_NAMES);
+            int distributionColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION);
 
+            double amount = cursor.getDouble(amountColumnIndex);
+            String date = cursor.getString(dateColumnIndex);
+            String[] employeeIds = cursor.getString(employeeIdsColumnIndex).split(",");
+            String[] names = cursor.getString(namesColumnIndex).split(",");
+            String[] distribution = cursor.getString(distributionColumnIndex).split(",");
+
+            tipAmountEditText.setText(String.valueOf(amount));
+            dateTextView.setText(date);
+
+            for (int i=0; i<employeeIds.length; i++) {
+                addedEmployees.add(new AddedEmployee(Long.valueOf(employeeIds[i]), names[i], distribution[i]));
+            }
+
+        }
     }
 
     @Override

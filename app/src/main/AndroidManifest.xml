@@ -33,7 +33,7 @@
         </activity>
         <activity
             android:name=".TipEditActivity"
-            android:label="@string/title_tip_edit"
+            android:label="@string/title_tip_insert"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
             <meta-data
