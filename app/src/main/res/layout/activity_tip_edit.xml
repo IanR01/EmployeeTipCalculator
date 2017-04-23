@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ianrieken.employeetipcalculator.TipEditActivity">
+
+    <EditText
+        android:id="@+id/tip_amount_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="48dp"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:hint="@string/hint_tip_amount"
+        android:inputType="numberDecimal"
+
+        android:textAlignment="center"
+        android:textSize="32sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/date_picker_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:src="@drawable/ic_event_black_24dp" />
+
+        <TextView
+            android:id="@+id/date_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="26 maart 2017" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/icon_add_employee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="16dp"
+            android:src="@drawable/ic_people_black_24dp" />
+
+        <AutoCompleteTextView
+            android:id="@+id/add_employee_autocompletetextview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="false"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/icon_add_employee"
+            android:layout_toStartOf="@+id/time_edittext"
+            android:background="@android:color/transparent"
+            android:hint="@string/hint_add_employee"
+            android:imeOptions="actionNext"
+            android:inputType="textCapWords|textPersonName"
+            android:nextFocusDown="@id/time_edittext"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/time_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="false"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/imageview_add_employee"
+            android:background="@android:color/transparent"
+            android:hint="@string/hint_time"
+            android:inputType="time"
+            android:padding="16dp"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/imageview_add_employee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="16dp"
+            android:src="@drawable/ic_add_circle_outline_black_24dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="56dp"
+        android:background="@android:color/darker_gray" />
+
+    <ListView
+        android:id="@+id/added_employees_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="56dp" />
+</LinearLayout>

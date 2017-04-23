@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Employee Tip Calculator</string>
+
+    <!-- The titles of the three tabs -->
+    <string name="title_tab_tip">Fooi</string>
+    <string name="title_tab_payment">Uitbetalen</string>
+    <string name="title_tab_employees">Werknemers</string>
+
+    <!-- Main activity menu -->
+    <string name="action_delete_all_rows">Alles verwijderen</string>
+    <string name="action_insert_dummy_data">Dummy data invoeren</string>
+
+    <!-- Tip edit activity -->
+    <string name="title_tip_edit">Invoeren</string>
+    <string name="hint_tip_amount">0.00</string>
+    <string name="hint_add_employee">Werknemer toevoegen…</string>
+    <string name="hint_time">0:00</string>
+    <string name="alertdialog_no_hours_message">Weet je zeker dat je niet het aantal gewerkte uren wilt invoeren?</string>
+    <string name="alertdialog_no_hours_positive">Ga verder zonder uren</string>
+    <string name="alertdialog_no_hours_negative">Terug</string>
+    <string name="alertdialog_hours_required_message">Voer het aantal gewerkte uren in. Wil je liever geen uren registreren, verwijder dan eerst iedereen uit de lijst</string>
+    <string name="alertdialog_hours_required_button">OK</string>
+
+    <!-- New payment activity -->
+    <string name="title_payment_new">Nieuwe uitbetaling</string>
+    <string name="payment_new_description">Omschrijving…</string>
+    <string name="payment_new_to">Tot en met </string>
+
+    <!-- Payment detail activity -->
+    <string name="caption_money_inpot">In pot</string>
+    <string name="caption_money_paid">Betaald</string>
+    <string name="caption_money_total">Totaal</string>
+
+    <!-- Employee edit activity -->
+    <string name="title_employee_edit_new">Nieuwe werknemer</string>
+    <string name="title_employee_edit_update">Bewerk werknemer</string>
+    <string name="hint_employee_name">Naam</string>
+    <string name="hint_employee_memo">Memo</string>
+    <string name="setting_employee_active">Actief</string>
+    <string name="action_done">Klaar</string>
+    <string name="editor_update_employee_failed">Fout bij updaten werknemer</string>
+    <string name="editor_update_employee_successful">Werknemer geüpdatet</string>
+    <string name="editor_insert_employee_failed">Fout bij toevoegen nieuwe werknemer</string>
+    <string name="editor_insert_employee_successful">Nieuwe werknemer toegevoegd</string>
+
+    <!-- Employee detail activity -->
+    <string name="caption_employee_balance">Balans</string>
+    <string name="caption_employee_memo">Memo</string>
+    <string name="caption_employee_active">Actief</string>
+    <string name="caption_employee_active_yes">Ja</string>
+    <string name="caption_employee_active_no">Nee</string>
+    <string name="caption_employee_registration">Geregistreerd sinds</string>
+    <string name="caption_employee_payments">Uitbetalingen</string>
+    <string name="action_edit">Aanpassen</string>
+
+</resources>

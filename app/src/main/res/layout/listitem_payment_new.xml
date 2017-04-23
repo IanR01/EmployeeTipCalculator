@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="false"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/payment_new_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="16dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/payment_new_checkbox"
+        android:layout_toStartOf="@+id/payment_amount_textview"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/payment_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ian"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/payment_subtitle_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subtitle" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/payment_amount_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:padding="16dp"
+        android:text="23.45" />
+
+</RelativeLayout>

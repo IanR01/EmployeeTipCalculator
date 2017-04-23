@@ -1,0 +1,25 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ianrieken.employeetipcalculator.EmployeesFragment">
+
+    <ListView
+        android:id="@+id/employee_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/empty_view_employees"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Press the button in the bottom right to add employees" />
+        <!-- TODO insert emptyview, in case there is no listview -->
+    </RelativeLayout>
+
+</FrameLayout>
