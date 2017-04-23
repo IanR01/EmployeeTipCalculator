@@ -212,9 +212,6 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
     // Adds an employee to the list
     public AddedEmployee getAddedEmployee(String name, String hours) {
         AddedEmployee employee;
-        double numericHours;
-
-        numericHours = getNumericHour(hours);
 
         for (int i=0; i<employeesList.size(); i++) {
 
@@ -253,40 +250,6 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             //TODO check whether the employee is already in the list (preferably also remove the name from the shortlist)
             //TODO check whether the entered time is in the right format
             resetInputFields();
-        }
-    }
-
-    //TODO remove?
-    private double getNumericHour(String hoursInput) {
-
-        if (hoursInput.equals("")) {
-            //TODO Make sure the option to insert time disappears? Or is this already handled somewhere else?
-            return 1;
-        } else if (hoursInput.contains(":")) {
-            String[] hoursSeperated = hoursInput.split(":");
-            if (hoursSeperated.length == 2) {
-                Log.v(LOG_TAG, "Hours seperated into " + hoursSeperated[0] + " and " + hoursSeperated[1]);
-                if(hoursSeperated[0].length() > 0 && hoursSeperated[1].length() == 2) {
-                    if(Integer.valueOf(hoursSeperated[1]) < 60){
-                        double hoursOutput;
-                        hoursOutput = Double.valueOf(hoursSeperated[0]) + (Double.valueOf(hoursSeperated[1]) / 60);
-                        Log.v(LOG_TAG, "Succesfully translated hours into double: " + hoursOutput);
-                        return hoursOutput;
-                    } else {
-                        Log.e(LOG_TAG, "Minutes should be max 59");
-                        return 0;
-                    }
-                } else {
-                    Log.e(LOG_TAG, "Hours should at least 1 and minutes should be exactly 2 characters long");
-                    return 0;
-                }
-            } else {
-                Log.e(LOG_TAG, "Input should only contain hours and minutes");
-                return 0;
-            }
-        } else {
-            Log.v(LOG_TAG, "Only whole hours entered: " + hoursInput);
-            return Double.valueOf(hoursInput);
         }
     }
 
@@ -382,6 +345,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
     private boolean checkInputHours() {
         if (addEmployeeTime.getText().toString().equals("")) {
             if(addEmployeeTime.getVisibility() == View.INVISIBLE) {
+                addEmployeeTime.setText("1");
                 return true;
             } else {
                 Log.v(LOG_TAG, "No amount of hours entered");
