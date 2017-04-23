@@ -20,6 +20,8 @@
     <string name="alertdialog_no_hours_negative">Terug</string>
     <string name="alertdialog_hours_required_message">Voer het aantal gewerkte uren in. Wil je liever geen uren registreren, verwijder dan eerst iedereen uit de lijst</string>
     <string name="alertdialog_hours_required_button">OK</string>
+    <string name="editor_insert_tip_failed">Fout bij registreren fooi</string>
+    <string name="editor_insert_tip_successful">Fooi geregistreerd</string>
 
     <!-- New payment activity -->
     <string name="title_payment_new">Nieuwe uitbetaling</string>

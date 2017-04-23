@@ -36,6 +36,8 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
 
     private final String LOG_TAG = this.getClass().getSimpleName();
 
+    private Uri mCurrentTipUri;
+
     static final ArrayList<AddedEmployee> addedEmployees = new ArrayList<AddedEmployee>();
     static ArrayAdapter<String> adapter;
 
@@ -140,7 +142,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_done:
-                insertTipRegistration();
+                Uri uri = insertTipRegistration();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -313,13 +315,32 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         Log.v(LOG_TAG, "Employee id's: " + employeeids);
         Log.v(LOG_TAG, "Employee hours: " + employeehours);
 
-
-
-
         values.put(RegisterEntry.COLUMN_REGISTER_DATE, dateTextView.getText().toString());
         values.put(RegisterEntry.COLUMN_REGISTER_AMOUNT, tipAmountEditText.getText().toString());
+        values.put(RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS, employeeids);
+        values.put(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION, employeehours);
+        values.put(RegisterEntry.COLUMN_REGISTER_ACTION, RegisterEntry.REGISTER_ACTION_TIP);
 
-        return null;
+        if (mCurrentTipUri == null) {
+            //A new tip registration is being added
+            values.put(RegisterEntry.COLUMN_REGISTER_TIMESTAMP_CREATED, System.currentTimeMillis());
+
+            //Insert a new row into the database
+            Uri newUri = getContentResolver().insert(RegisterEntry.REGISTER_CONTENT_URI, values);
+
+            if (newUri == null) {
+                Toast.makeText(this, getString(R.string.editor_insert_tip_failed), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.editor_insert_tip_successful), Toast.LENGTH_SHORT).show();
+            }
+
+            return newUri;
+        } else {
+            //An existing tip registration is being updated
+            values.put(RegisterEntry.COLUMN_REGISTER_TIMESTAMP_UPDATED, System.currentTimeMillis());
+
+            return mCurrentTipUri;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

@@ -45,7 +45,8 @@ public class TipContract {
         public static final String TABLE_NAME = "register";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUMN_REGISTER_TIMESTAMP = "timestamp";
+        public static final String COLUMN_REGISTER_TIMESTAMP_CREATED = "timestamp_created";
+        public static final String COLUMN_REGISTER_TIMESTAMP_UPDATED = "timestamp_updated";
         public static final String COLUMN_REGISTER_DATE = "date";
         public static final String COLUMN_REGISTER_AMOUNT = "amount";
         public static final String COLUMN_REGISTER_EMPLOYEEIDS = "employeeids";

@@ -35,7 +35,8 @@ public class TipDbHelper extends SQLiteOpenHelper {
 
         String SQL_CREATE_REGISTER_TABLE = "CREATE TABLE " + RegisterEntry.TABLE_NAME + " ("
                 + RegisterEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + RegisterEntry.COLUMN_REGISTER_TIMESTAMP + " INTEGER NOT NULL, "
+                + RegisterEntry.COLUMN_REGISTER_TIMESTAMP_CREATED + " INTEGER NOT NULL, "
+                + RegisterEntry.COLUMN_REGISTER_TIMESTAMP_UPDATED + " INTEGER, "
                 + RegisterEntry.COLUMN_REGISTER_DATE + " TEXT NOT NULL, "
                 + RegisterEntry.COLUMN_REGISTER_AMOUNT + " INTEGER NOT NULL, "
                 + RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS + " TEXT NOT NULL, "
