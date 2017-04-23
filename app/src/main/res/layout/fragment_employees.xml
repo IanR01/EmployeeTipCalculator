@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Press the button in the bottom right to add employees" />
+            android:text="Druk op de knop rechtsonder om werknemers toe te voegen" />
         <!-- TODO insert emptyview, in case there is no listview -->
     </RelativeLayout>
 

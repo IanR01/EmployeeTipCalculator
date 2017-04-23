@@ -10,6 +10,9 @@
     <string name="action_delete_all_rows">Alles verwijderen</string>
     <string name="action_insert_dummy_data">Dummy data invoeren</string>
 
+    <!-- Tip fragment activity -->
+    <string name="amount_employees">personen</string>
+
     <!-- Tip edit activity -->
     <string name="title_tip_edit">Invoeren</string>
     <string name="hint_tip_amount">0.00</string>

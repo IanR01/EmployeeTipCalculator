@@ -9,4 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <RelativeLayout
+        android:id="@+id/empty_view_tip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Druk op de knop rechtsonder om fooi te registreren" />
+        <!-- TODO insert emptyview, in case there is no listview -->
+    </RelativeLayout>
+
 </FrameLayout>
