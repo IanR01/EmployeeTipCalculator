@@ -72,6 +72,8 @@ public class EmployeeEditActivity extends AppCompatActivity implements LoaderMan
         switch (item.getItemId()) {
             case R.id.action_done:
 
+                //TODO make sure nu comma is used in employee name
+
                 int active = 0;
                 if (activeSwitch.isChecked()) {
                     active = EmployeeEntry.EMPLOYEE_ACTIVE;

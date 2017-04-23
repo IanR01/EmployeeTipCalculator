@@ -171,6 +171,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
                 RegisterEntry.COLUMN_REGISTER_AMOUNT,
                 RegisterEntry.COLUMN_REGISTER_DATE,
                 RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS,
+                RegisterEntry.COLUMN_REGISTER_NAMES,
                 RegisterEntry.COLUMN_REGISTER_DISTRIBUTION
         };
         return new CursorLoader(this,
@@ -190,9 +191,12 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             int namesColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_NAMES);
             int distributionColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION);
 
+            Log.v(LOG_TAG, "Log columnindexes: amount=" + amountColumnIndex + ", date=" + dateColumnIndex+ ", names=" + namesColumnIndex);
+
             double amount = cursor.getDouble(amountColumnIndex);
             String date = cursor.getString(dateColumnIndex);
             String[] employeeIds = cursor.getString(employeeIdsColumnIndex).split(",");
+            Log.v(LOG_TAG, "names string: " + cursor.getString(namesColumnIndex));
             String[] names = cursor.getString(namesColumnIndex).split(",");
             String[] distribution = cursor.getString(distributionColumnIndex).split(",");
 
@@ -202,6 +206,9 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             for (int i=0; i<employeeIds.length; i++) {
                 addedEmployees.add(new AddedEmployee(Long.valueOf(employeeIds[i]), names[i], distribution[i]));
             }
+
+            addedEmployeeListView.invalidateViews();
+
 
         }
     }
@@ -344,23 +351,28 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
     public Uri insertTipRegistration() {
         ContentValues values = new ContentValues();
         String employeeids = "";
+        String employeenames = "";
         String employeehours = "";
 
         for (int i=0; i<addedEmployees.size(); i++) {
             if(i!=0){
                 employeeids = employeeids + ",";
+                employeenames = employeenames + ",";
                 employeehours = employeehours + ",";
             }
             employeeids = employeeids + String.valueOf(addedEmployees.get(i).getId());
+            employeenames = employeenames + String.valueOf(addedEmployees.get(i).getName());
             employeehours = employeehours + String.valueOf(addedEmployees.get(i).getNumericHours());
         }
 
         Log.v(LOG_TAG, "Employee id's: " + employeeids);
+        Log.v(LOG_TAG, "Employee names: " + employeenames);
         Log.v(LOG_TAG, "Employee hours: " + employeehours);
 
         values.put(RegisterEntry.COLUMN_REGISTER_DATE, dateTextView.getText().toString());
         values.put(RegisterEntry.COLUMN_REGISTER_AMOUNT, tipAmountEditText.getText().toString());
         values.put(RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS, employeeids);
+        values.put(RegisterEntry.COLUMN_REGISTER_NAMES, employeenames);
         values.put(RegisterEntry.COLUMN_REGISTER_NREMPLOYEES, addedEmployees.size());
         values.put(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION, employeehours);
         values.put(RegisterEntry.COLUMN_REGISTER_ACTION, RegisterEntry.REGISTER_ACTION_TIP);
@@ -394,6 +406,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
     private boolean checkInputName() {
         if(addEmployeeTextView.getText().toString().equals("")) {
             //TODO show dialog
+            //TODO make sure no comma is used in employee names
             Log.v(LOG_TAG, "No employee name entered, not adding to the list");
             return false;
         } else {
