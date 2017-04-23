@@ -34,6 +34,8 @@ import java.util.List;
 
 public class TipEditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    // Test change in github
+
     private final String LOG_TAG = this.getClass().getSimpleName();
 
     static final ArrayList<AddedEmployee> addedEmployees = new ArrayList<AddedEmployee>();
