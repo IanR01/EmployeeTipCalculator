@@ -26,6 +26,8 @@
     <string name="alertdialog_hours_required_button">OK</string>
     <string name="editor_insert_tip_failed">Fout bij registreren fooi</string>
     <string name="editor_insert_tip_successful">Fooi geregistreerd</string>
+    <string name="editor_update_tip_failed">Fout bij updaten fooi</string>
+    <string name="editor_update_tip_successful">Fooi geüpdatet</string>
     <string name="action_delete">Verwijderen</string>
 
     <!-- New payment activity -->

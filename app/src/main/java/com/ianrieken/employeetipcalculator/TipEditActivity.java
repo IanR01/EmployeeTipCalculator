@@ -66,6 +66,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         if (mCurrentTipUri != null) {
             setTitle(getString(R.string.title_tip_edit));
             getLoaderManager().initLoader(EDIT_TIP_LOADER, null, this);
+            Log.v(LOG_TAG, "mCurrentTipUri = " + mCurrentTipUri);
         }
 
         fillEmployeeLists();
@@ -191,12 +192,9 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             int namesColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_NAMES);
             int distributionColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION);
 
-            Log.v(LOG_TAG, "Log columnindexes: amount=" + amountColumnIndex + ", date=" + dateColumnIndex+ ", names=" + namesColumnIndex);
-
             double amount = cursor.getDouble(amountColumnIndex);
             String date = cursor.getString(dateColumnIndex);
             String[] employeeIds = cursor.getString(employeeIdsColumnIndex).split(",");
-            Log.v(LOG_TAG, "names string: " + cursor.getString(namesColumnIndex));
             String[] names = cursor.getString(namesColumnIndex).split(",");
             String[] distribution = cursor.getString(distributionColumnIndex).split(",");
 
@@ -394,6 +392,14 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         } else {
             //An existing tip registration is being updated
             values.put(RegisterEntry.COLUMN_REGISTER_TIMESTAMP_UPDATED, System.currentTimeMillis());
+
+            int rowsAffected = getContentResolver().update(mCurrentTipUri, values, null, null);
+
+            if (rowsAffected == 0) {
+                Toast.makeText(this, getString(R.string.editor_update_tip_failed), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.editor_update_tip_successful), Toast.LENGTH_SHORT).show();
+            }
 
             return mCurrentTipUri;
         }
