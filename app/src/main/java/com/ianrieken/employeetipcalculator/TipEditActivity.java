@@ -230,7 +230,8 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         String[] projection = {
                 TipContract.EmployeeEntry._ID,
                 TipContract.EmployeeEntry.COLUMN_EMPLOYEE_NAME,
-                TipContract.EmployeeEntry.COLUMN_EMPLOYEE_ACTIVE
+                TipContract.EmployeeEntry.COLUMN_EMPLOYEE_ACTIVE,
+                TipContract.EmployeeEntry.COLUMN_EMPLOYEE_BALANCE
         };
 
         c = getContentResolver().query(TipContract.EmployeeEntry.EMPLOYEE_CONTENT_URI,
@@ -247,13 +248,13 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
                 isActive = false;
             }
 
-            employeesList.add(new Employee(c.getInt(0), c.getString(1), isActive));
+            employeesList.add(new Employee(c.getInt(0), c.getString(1), isActive, c.getDouble(3)));
 
             if(c.getInt(2) == TipContract.EmployeeEntry.EMPLOYEE_ACTIVE) {
                 activeEmployeesList.add(c.getString(1));
                 Log.v(LOG_TAG, c.getString(1) + " is active");
             }
-            Log.v(LOG_TAG, "Added to list: " + c.getString(1) + " with id " + c.getString(0));
+            Log.v(LOG_TAG, "Added to list: " + c.getString(1) + " with id " + c.getString(0) + " and balance " + c.getDouble(3));
         }
 
         c.close();
@@ -380,6 +381,8 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         values.put(RegisterEntry.COLUMN_REGISTER_HOURS, employeehours);
         values.put(RegisterEntry.COLUMN_REGISTER_ACTION, RegisterEntry.REGISTER_ACTION_TIP);
 
+        double[] currentEmployeeBalance = getCurrentEmployeeBalance(employeeids);
+
         if (mCurrentTipUri == null) {
             //A new tip registration is being added
             values.put(RegisterEntry.COLUMN_REGISTER_TIMESTAMP_CREATED, System.currentTimeMillis());
@@ -421,6 +424,22 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             }
             finish();
         }
+    }
+
+    private double[] getCurrentEmployeeBalance(String ids) {
+        String[] id = ids.split(",");
+        double[] balance = new double[ids.length()];
+
+        for (int i=0; i<id.length; i++) {
+            for(int j=0; j<employeesList.size(); j++) {
+                if (employeesList.get(j).getId() == Long.valueOf(id[i])) {
+                    balance[i] = employeesList.get(j).getBalance();
+                    Log.v(LOG_TAG, "The balance of employee id " + id[i] + " is " + balance[i]);
+                }
+            }
+        }
+
+        return balance;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

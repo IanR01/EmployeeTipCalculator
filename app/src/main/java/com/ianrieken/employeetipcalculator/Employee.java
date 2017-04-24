@@ -15,10 +15,11 @@ public class Employee {
         mBalance = balance;
     }
 
-    public Employee(long id, String name, boolean active){
+    public Employee(long id, String name, boolean active, double balance){
         mId = id;
         mName = name;
         mActive = active;
+        mBalance = balance;
     }
 
     public String getName() {
