@@ -382,6 +382,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         values.put(RegisterEntry.COLUMN_REGISTER_ACTION, RegisterEntry.REGISTER_ACTION_TIP);
 
         double[] currentEmployeeBalance = getCurrentEmployeeBalance(employeeids);
+        double[] newEmployeeBalance = getNewEmployeeBalance();
 
         if (mCurrentTipUri == null) {
             //A new tip registration is being added
@@ -440,6 +441,27 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         }
 
         return balance;
+    }
+
+    private double[] getNewEmployeeBalance() {
+        double[] newBalance = new double[addedEmployees.size()];
+        double totalHours = 0;
+
+
+        for (int i=0; i<addedEmployees.size(); i++) {
+            totalHours = totalHours + addedEmployees.get(i).getNumericHours();
+        }
+
+        Log.v(LOG_TAG, "Total hours = " + totalHours);
+        double amountPerHour = Double.valueOf(tipAmountEditText.getText().toString()) / totalHours;
+        Log.v(LOG_TAG, "Amount per hour = " + amountPerHour);
+
+        for (int i=0; i<addedEmployees.size(); i++) {
+            newBalance[i] = addedEmployees.get(i).getNumericHours() * amountPerHour;
+            Log.v(LOG_TAG, addedEmployees.get(i).getName() + " has earned " + newBalance[i]);
+        }
+
+        return newBalance;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
