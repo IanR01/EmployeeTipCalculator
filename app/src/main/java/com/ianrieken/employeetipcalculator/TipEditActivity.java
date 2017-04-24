@@ -173,7 +173,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
                 RegisterEntry.COLUMN_REGISTER_DATE,
                 RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS,
                 RegisterEntry.COLUMN_REGISTER_NAMES,
-                RegisterEntry.COLUMN_REGISTER_DISTRIBUTION
+                RegisterEntry.COLUMN_REGISTER_HOURS
         };
         return new CursorLoader(this,
                 mCurrentTipUri,
@@ -190,19 +190,19 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             int dateColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_DATE);
             int employeeIdsColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS);
             int namesColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_NAMES);
-            int distributionColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION);
+            int hoursColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_HOURS);
 
             double amount = cursor.getDouble(amountColumnIndex);
             String date = cursor.getString(dateColumnIndex);
             String[] employeeIds = cursor.getString(employeeIdsColumnIndex).split(",");
             String[] names = cursor.getString(namesColumnIndex).split(",");
-            String[] distribution = cursor.getString(distributionColumnIndex).split(",");
+            String[] hours = cursor.getString(hoursColumnIndex).split(",");
 
             tipAmountEditText.setText(String.valueOf(amount));
             dateTextView.setText(date);
 
             for (int i=0; i<employeeIds.length; i++) {
-                addedEmployees.add(new AddedEmployee(Long.valueOf(employeeIds[i]), names[i], distribution[i]));
+                addedEmployees.add(new AddedEmployee(Long.valueOf(employeeIds[i]), names[i], hours[i]));
             }
 
             addedEmployeeListView.invalidateViews();
@@ -351,28 +351,33 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         String employeeids = "";
         String employeenames = "";
         String employeehours = "";
+        String employeedistribution = "";
 
         for (int i=0; i<addedEmployees.size(); i++) {
             if(i!=0){
                 employeeids = employeeids + ",";
                 employeenames = employeenames + ",";
                 employeehours = employeehours + ",";
+                employeedistribution = employeedistribution + ",";
             }
             employeeids = employeeids + String.valueOf(addedEmployees.get(i).getId());
             employeenames = employeenames + String.valueOf(addedEmployees.get(i).getName());
-            employeehours = employeehours + String.valueOf(addedEmployees.get(i).getNumericHours());
+            employeehours = employeehours + String.valueOf(addedEmployees.get(i).getTime());
+            employeedistribution = employeedistribution + String.valueOf(addedEmployees.get(i).getNumericHours());
         }
 
         Log.v(LOG_TAG, "Employee id's: " + employeeids);
         Log.v(LOG_TAG, "Employee names: " + employeenames);
         Log.v(LOG_TAG, "Employee hours: " + employeehours);
+        Log.v(LOG_TAG, "Employee hours distribution: " + employeedistribution);
 
         values.put(RegisterEntry.COLUMN_REGISTER_DATE, dateTextView.getText().toString());
         values.put(RegisterEntry.COLUMN_REGISTER_AMOUNT, tipAmountEditText.getText().toString());
         values.put(RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS, employeeids);
         values.put(RegisterEntry.COLUMN_REGISTER_NAMES, employeenames);
         values.put(RegisterEntry.COLUMN_REGISTER_NREMPLOYEES, addedEmployees.size());
-        values.put(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION, employeehours);
+        values.put(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION, employeedistribution);
+        values.put(RegisterEntry.COLUMN_REGISTER_HOURS, employeehours);
         values.put(RegisterEntry.COLUMN_REGISTER_ACTION, RegisterEntry.REGISTER_ACTION_TIP);
 
         if (mCurrentTipUri == null) {

@@ -43,6 +43,7 @@ public class TipDbHelper extends SQLiteOpenHelper {
                 + RegisterEntry.COLUMN_REGISTER_NAMES + " TEXT NOT NULL, "
                 + RegisterEntry.COLUMN_REGISTER_NREMPLOYEES + " INTEGER, "
                 + RegisterEntry.COLUMN_REGISTER_DISTRIBUTION + " TEXT NOT NULL, "
+                + RegisterEntry.COLUMN_REGISTER_HOURS + " TEXT, "
                 + RegisterEntry.COLUMN_REGISTER_ACTION + " INTEGER NOT NULL DEFAULT 0, "
                 + RegisterEntry.COLUMN_REGISTER_PAYMENTID + " INTEGER);";
 
