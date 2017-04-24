@@ -55,6 +55,12 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
     List<String> activeEmployeesList;
     List<Employee> employeesList;
 
+    String employeepaid = "";
+
+    String[] originalIds;
+    String[] originalPaid;
+    // TODO remove: List<Double> originalCurrentBalance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,9 +146,12 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_done:
-                Uri uri = insertTipRegistration();
-                //TODO first test whether insertTipRegistration went well before updating employee's balances?
+                if(mCurrentTipUri!=null){
+                    subtractOriginalPaid();
+                }
                 updateEmployeeBalance();
+                Uri uri = insertTipRegistration();
+                //TODO first test whether insertTipRegistration went well before updating employee's balances? -- or the other way round
                 finish();
                 return true;
             case R.id.action_delete:
@@ -175,7 +184,8 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
                 RegisterEntry.COLUMN_REGISTER_DATE,
                 RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS,
                 RegisterEntry.COLUMN_REGISTER_NAMES,
-                RegisterEntry.COLUMN_REGISTER_HOURS
+                RegisterEntry.COLUMN_REGISTER_HOURS,
+                RegisterEntry.COLUMN_REGISTER_PAID
         };
         return new CursorLoader(this,
                 mCurrentTipUri,
@@ -193,6 +203,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             int employeeIdsColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS);
             int namesColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_NAMES);
             int hoursColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_HOURS);
+            int paidColumnIndex = cursor.getColumnIndex(RegisterEntry.COLUMN_REGISTER_PAID);
 
             double amount = cursor.getDouble(amountColumnIndex);
             String date = cursor.getString(dateColumnIndex);
@@ -200,17 +211,29 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             String[] names = cursor.getString(namesColumnIndex).split(",");
             String[] hours = cursor.getString(hoursColumnIndex).split(",");
 
+            //originalIds = new String[employeeIds.length];
+            originalIds = employeeIds;
+            originalPaid = cursor.getString(paidColumnIndex).split(",");
+
             tipAmountEditText.setText(String.valueOf(amount));
             dateTextView.setText(date);
 
+            //TODO remove: originalCurrentBalance = new ArrayList<>();
+
+
+
             for (int i=0; i<employeeIds.length; i++) {
-                double currentBalance = 0;
+                //TODO remove: double currentBalance = 0;
+                //TODO remove:
+                /*--
                 for (int j=0; j<employeesList.size(); j++) {
                     if (employeesList.get(j).getId() == Long.valueOf(employeeIds[i])) {
                         currentBalance = employeesList.get(j).getBalance();
+                        originalCurrentBalance.add(currentBalance);
                     }
                 }
-                addedEmployees.add(new AddedEmployee(Long.valueOf(employeeIds[i]), names[i], hours[i], currentBalance));
+                --*/
+                addedEmployees.add(new AddedEmployee(Long.valueOf(employeeIds[i]), names[i], hours[i]));
             }
 
             addedEmployeeListView.invalidateViews();
@@ -280,13 +303,13 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
                 //Check to see whether the entered employee is marked as active
                 if(employeesList.get(i).isActive()) {
                     Log.v(LOG_TAG, "Employee " + employeesList.get(i).getName() + " exists and is active");
-                    employee = new AddedEmployee(employeesList.get(i).getId(), employeesList.get(i).getName(), hours, employeesList.get(i).getBalance());
+                    employee = new AddedEmployee(employeesList.get(i).getId(), employeesList.get(i).getName(), hours);
                     return employee;
                 } else {
                     //TODO Pop up a dialog telling the user the employee already exists but is not active. Show registration date.
                     //TODO Give the option to make the employee active again, or go back and change the name
                     Log.v(LOG_TAG, "Employee " + employeesList.get(i).getName() + " exists but is NOT active");
-                    employee = new AddedEmployee(employeesList.get(i).getId(), employeesList.get(i).getName(), hours, employeesList.get(i).getBalance());
+                    employee = new AddedEmployee(employeesList.get(i).getId(), employeesList.get(i).getName(), hours);
                     return employee;
                 }
             }
@@ -298,7 +321,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         Uri newEmployee = insertEmployee(name, "", TipContract.EmployeeEntry.EMPLOYEE_ACTIVE);
         long id = ContentUris.parseId(newEmployee);
         Log.v(LOG_TAG, "New employee added with id " + id);
-        employee = new AddedEmployee(id, name, hours, 0);
+        employee = new AddedEmployee(id, name, hours);
         return employee;
     }
 
@@ -387,6 +410,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         values.put(RegisterEntry.COLUMN_REGISTER_NREMPLOYEES, addedEmployees.size());
         values.put(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION, employeedistribution);
         values.put(RegisterEntry.COLUMN_REGISTER_HOURS, employeehours);
+        values.put(RegisterEntry.COLUMN_REGISTER_PAID, employeepaid);
         values.put(RegisterEntry.COLUMN_REGISTER_ACTION, RegisterEntry.REGISTER_ACTION_TIP);
 
         if (mCurrentTipUri == null) {
@@ -425,10 +449,17 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         double[] addedEmployeeBalance = getAddedEmployeeBalance();
 
         for(int i=0; i<addedEmployees.size(); i++) {
-            double newBalance = addedEmployees.get(i).getCurrentBalance() + addedEmployeeBalance[i];
+            double newBalance = getCurrentBalance(addedEmployees.get(i).getId()) + addedEmployeeBalance[i];
+
+            //Add the new balance to the string that will be inserted into the registration table in the 'paid' column
+            if(i!=0){
+                employeepaid = employeepaid + ",";
+            }
+            employeepaid = employeepaid + String.valueOf(newBalance);
+
             values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_BALANCE, newBalance);
 
-            Log.v(LOG_TAG, "The balance of " + addedEmployees.get(i).getName() + " has increased by " + addedEmployeeBalance[i] + " from " + addedEmployees.get(i).getCurrentBalance() + " to " + newBalance);
+            Log.v(LOG_TAG, "The balance of " + addedEmployees.get(i).getName() + " has increased by " + addedEmployeeBalance[i] + " from " + getCurrentBalance(addedEmployees.get(i).getId()) + " to " + newBalance);
 
             int rowsAffected = getContentResolver().update(ContentUris.withAppendedId(TipContract.EmployeeEntry.EMPLOYEE_CONTENT_URI, addedEmployees.get(i).getId()), values, null, null);
 
@@ -436,6 +467,26 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
                 Log.e(LOG_TAG, "Updating the balance of " + addedEmployees.get(i).getName() + " FAILED");
             } else {
                 Log.v(LOG_TAG, "Updating the balance of " + addedEmployees.get(i).getName() + " was SUCCESSFUL");
+            }
+
+            values.clear();
+        }
+    }
+
+    public void subtractOriginalPaid() {
+        ContentValues values = new ContentValues();
+
+        for(int i=0; i<originalIds.length; i++) {
+            double subtractedBalance = getCurrentBalance(Long.valueOf(originalIds[i])) - Double.valueOf(originalPaid[i]);
+
+            values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_BALANCE, subtractedBalance);
+
+            int rowsAffected = getContentResolver().update(ContentUris.withAppendedId(TipContract.EmployeeEntry.EMPLOYEE_CONTENT_URI, Long.valueOf(originalIds[i])), values, null, null);
+
+            if (rowsAffected == 0) {
+                Log.e(LOG_TAG, "Subtracting the balance of id " + originalIds[i] + " FAILED");
+            } else {
+                Log.v(LOG_TAG, "Subtracting the balance of id " + originalIds[i] + " was SUCCESSFUL");
             }
 
             values.clear();
@@ -455,21 +506,15 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
-    //TODO delete function
-    private double[] getCurrentEmployeeBalance(String ids) {
-        String[] id = ids.split(",");
-        double[] balance = new double[ids.length()];
+    private double getCurrentBalance(long id) {
+        String[] projection = {TipContract.EmployeeEntry.COLUMN_EMPLOYEE_BALANCE};
 
-        for (int i=0; i<id.length; i++) {
-            for(int j=0; j<employeesList.size(); j++) {
-                if (employeesList.get(j).getId() == Long.valueOf(id[i])) {
-                    balance[i] = employeesList.get(j).getBalance();
-                    Log.v(LOG_TAG, "The balance of employee id " + id[i] + " is " + balance[i]);
-                }
-            }
+        Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(TipContract.EmployeeEntry.EMPLOYEE_CONTENT_URI, id), projection, null, null, null);
+        if (cursor.moveToFirst()) {
+            return cursor.getDouble(0);
+        } else {
+            return 0;
         }
-
-        return balance;
     }
 
     private double[] getAddedEmployeeBalance() {

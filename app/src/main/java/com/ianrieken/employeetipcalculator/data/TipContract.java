@@ -54,6 +54,7 @@ public class TipContract {
         public static final String COLUMN_REGISTER_NREMPLOYEES = "nremployees";
         public static final String COLUMN_REGISTER_DISTRIBUTION = "distribution";
         public static final String COLUMN_REGISTER_HOURS = "hours";
+        public static final String COLUMN_REGISTER_PAID = "paid";
         public static final String COLUMN_REGISTER_ACTION = "action";
         public static final String COLUMN_REGISTER_PAYMENTID = "paymentid";
 
