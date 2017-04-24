@@ -144,7 +144,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
                 finish();
                 return true;
             case R.id.action_delete:
-                //TODO insert delete functionallity
+                showDeleteConfirmationDialog();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -410,6 +410,19 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
+    public void deleteTipRegistration() {
+        if (mCurrentTipUri != null) {
+            int rowsDeleted = getContentResolver().delete(mCurrentTipUri, null, null);
+
+            if (rowsDeleted == 0) {
+                Toast.makeText(this, getString(R.string.editor_delete_tip_failed), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.editor_delete_tip_successful), Toast.LENGTH_SHORT).show();
+            }
+            finish();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Checks
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -506,6 +519,28 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.alertdialog_delete_message);
+        builder.setPositiveButton(R.string.alertdialog_delete_positive, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteTipRegistration();
+            }
+        });
+        builder.setNegativeButton(R.string.alertdialog_delete_negative, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
             }
         });
 

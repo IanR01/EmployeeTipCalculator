@@ -24,10 +24,15 @@
     <string name="alertdialog_no_hours_negative">Terug</string>
     <string name="alertdialog_hours_required_message">Voer het aantal gewerkte uren in. Wil je liever geen uren registreren, verwijder dan eerst iedereen uit de lijst</string>
     <string name="alertdialog_hours_required_button">OK</string>
+    <string name="alertdialog_delete_message">Weet je zeker dat je deze registratie wilt verwijderen?</string>
+    <string name="alertdialog_delete_positive">Verwijderen</string>
+    <string name="alertdialog_delete_negative">Terug</string>
     <string name="editor_insert_tip_failed">Fout bij registreren fooi</string>
     <string name="editor_insert_tip_successful">Fooi geregistreerd</string>
     <string name="editor_update_tip_failed">Fout bij updaten fooi</string>
     <string name="editor_update_tip_successful">Fooi geüpdatet</string>
+    <string name="editor_delete_tip_failed">Fout bij verwijderen registratie</string>
+    <string name="editor_delete_tip_successful">Registratie verwijderd</string>
     <string name="action_delete">Verwijderen</string>
 
     <!-- New payment activity -->
