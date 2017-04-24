@@ -10,11 +10,13 @@ public class AddedEmployee {
     private long mId;
     private String mName;
     private String mTime;
+    private double mCurrentBalance;
 
-    public AddedEmployee(long id, String name, String time){
+    public AddedEmployee(long id, String name, String time, double currentBalance){
         mId = id;
         mName = name;
         mTime = time;
+        mCurrentBalance = currentBalance;
     }
 
     public long getId() {
@@ -27,6 +29,10 @@ public class AddedEmployee {
 
     public String getTime() {
         return mTime;
+    }
+
+    public double getCurrentBalance() {
+        return mCurrentBalance;
     }
 
     public double getNumericHours() {

@@ -141,6 +141,8 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         switch (item.getItemId()) {
             case R.id.action_done:
                 Uri uri = insertTipRegistration();
+                //TODO first test whether insertTipRegistration went well before updating employee's balances?
+                updateEmployeeBalance();
                 finish();
                 return true;
             case R.id.action_delete:
@@ -202,7 +204,13 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             dateTextView.setText(date);
 
             for (int i=0; i<employeeIds.length; i++) {
-                addedEmployees.add(new AddedEmployee(Long.valueOf(employeeIds[i]), names[i], hours[i]));
+                double currentBalance = 0;
+                for (int j=0; j<employeesList.size(); j++) {
+                    if (employeesList.get(j).getId() == Long.valueOf(employeeIds[i])) {
+                        currentBalance = employeesList.get(j).getBalance();
+                    }
+                }
+                addedEmployees.add(new AddedEmployee(Long.valueOf(employeeIds[i]), names[i], hours[i], currentBalance));
             }
 
             addedEmployeeListView.invalidateViews();
@@ -272,13 +280,13 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
                 //Check to see whether the entered employee is marked as active
                 if(employeesList.get(i).isActive()) {
                     Log.v(LOG_TAG, "Employee " + employeesList.get(i).getName() + " exists and is active");
-                    employee = new AddedEmployee(employeesList.get(i).getId(), employeesList.get(i).getName(), hours);
+                    employee = new AddedEmployee(employeesList.get(i).getId(), employeesList.get(i).getName(), hours, employeesList.get(i).getBalance());
                     return employee;
                 } else {
                     //TODO Pop up a dialog telling the user the employee already exists but is not active. Show registration date.
                     //TODO Give the option to make the employee active again, or go back and change the name
                     Log.v(LOG_TAG, "Employee " + employeesList.get(i).getName() + " exists but is NOT active");
-                    employee = new AddedEmployee(employeesList.get(i).getId(), employeesList.get(i).getName(), hours);
+                    employee = new AddedEmployee(employeesList.get(i).getId(), employeesList.get(i).getName(), hours, employeesList.get(i).getBalance());
                     return employee;
                 }
             }
@@ -290,7 +298,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         Uri newEmployee = insertEmployee(name, "", TipContract.EmployeeEntry.EMPLOYEE_ACTIVE);
         long id = ContentUris.parseId(newEmployee);
         Log.v(LOG_TAG, "New employee added with id " + id);
-        employee = new AddedEmployee(id, name, hours);
+        employee = new AddedEmployee(id, name, hours, 0);
         return employee;
     }
 
@@ -381,9 +389,6 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         values.put(RegisterEntry.COLUMN_REGISTER_HOURS, employeehours);
         values.put(RegisterEntry.COLUMN_REGISTER_ACTION, RegisterEntry.REGISTER_ACTION_TIP);
 
-        double[] currentEmployeeBalance = getCurrentEmployeeBalance(employeeids);
-        double[] newEmployeeBalance = getNewEmployeeBalance();
-
         if (mCurrentTipUri == null) {
             //A new tip registration is being added
             values.put(RegisterEntry.COLUMN_REGISTER_TIMESTAMP_CREATED, System.currentTimeMillis());
@@ -414,6 +419,29 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
+    public void updateEmployeeBalance() {
+        //double[] currentEmployeeBalance = getCurrentEmployeeBalance(employeeids);
+        ContentValues values = new ContentValues();
+        double[] addedEmployeeBalance = getAddedEmployeeBalance();
+
+        for(int i=0; i<addedEmployees.size(); i++) {
+            double newBalance = addedEmployees.get(i).getCurrentBalance() + addedEmployeeBalance[i];
+            values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_BALANCE, newBalance);
+
+            Log.v(LOG_TAG, "The balance of " + addedEmployees.get(i).getName() + " has increased by " + addedEmployeeBalance[i] + " from " + addedEmployees.get(i).getCurrentBalance() + " to " + newBalance);
+
+            int rowsAffected = getContentResolver().update(ContentUris.withAppendedId(TipContract.EmployeeEntry.EMPLOYEE_CONTENT_URI, addedEmployees.get(i).getId()), values, null, null);
+
+            if (rowsAffected == 0) {
+                Log.e(LOG_TAG, "Updating the balance of " + addedEmployees.get(i).getName() + " FAILED");
+            } else {
+                Log.v(LOG_TAG, "Updating the balance of " + addedEmployees.get(i).getName() + " was SUCCESSFUL");
+            }
+
+            values.clear();
+        }
+    }
+
     public void deleteTipRegistration() {
         if (mCurrentTipUri != null) {
             int rowsDeleted = getContentResolver().delete(mCurrentTipUri, null, null);
@@ -427,6 +455,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
+    //TODO delete function
     private double[] getCurrentEmployeeBalance(String ids) {
         String[] id = ids.split(",");
         double[] balance = new double[ids.length()];
@@ -443,7 +472,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         return balance;
     }
 
-    private double[] getNewEmployeeBalance() {
+    private double[] getAddedEmployeeBalance() {
         double[] newBalance = new double[addedEmployees.size()];
         double totalHours = 0;
 
