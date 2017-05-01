@@ -59,7 +59,6 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
 
     String[] originalIds;
     String[] originalPaid;
-    // TODO remove: List<Double> originalCurrentBalance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -411,6 +410,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
         values.put(RegisterEntry.COLUMN_REGISTER_DISTRIBUTION, employeedistribution);
         values.put(RegisterEntry.COLUMN_REGISTER_HOURS, employeehours);
         values.put(RegisterEntry.COLUMN_REGISTER_PAID, employeepaid);
+        Log.v(LOG_TAG, "Inserted into database, array 'employee paid': " + employeepaid);
         values.put(RegisterEntry.COLUMN_REGISTER_ACTION, RegisterEntry.REGISTER_ACTION_TIP);
 
         if (mCurrentTipUri == null) {
@@ -455,7 +455,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             if(i!=0){
                 employeepaid = employeepaid + ",";
             }
-            employeepaid = employeepaid + String.valueOf(newBalance);
+            employeepaid = employeepaid + addedEmployeeBalance[i];
 
             values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_BALANCE, newBalance);
 
@@ -495,6 +495,9 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
 
     public void deleteTipRegistration() {
         if (mCurrentTipUri != null) {
+            //Subtract the tip from the employees balance before deleting
+            subtractOriginalPaid();
+
             int rowsDeleted = getContentResolver().delete(mCurrentTipUri, null, null);
 
             if (rowsDeleted == 0) {
@@ -511,8 +514,10 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
 
         Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(TipContract.EmployeeEntry.EMPLOYEE_CONTENT_URI, id), projection, null, null, null);
         if (cursor.moveToFirst()) {
+            Log.v(LOG_TAG, "Succesfully retrieved current balance of employee id " + id + ": " + cursor.getDouble(0));
             return cursor.getDouble(0);
         } else {
+            Log.e(LOG_TAG, "Error while trying to retrieve current balance of employee id " + id);
             return 0;
         }
     }
