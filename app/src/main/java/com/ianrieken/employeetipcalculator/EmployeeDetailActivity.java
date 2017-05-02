@@ -104,7 +104,7 @@ public class EmployeeDetailActivity extends AppCompatActivity implements LoaderM
             String regdate = cursor.getString(regdateColumnIndex);
 
             setTitle(name);
-            mBalanceTextView.setText(String.valueOf(balance));
+            mBalanceTextView.setText(String.format("%.2f", balance));
             mMemoTextView.setText(memo);
             switch (active) {
                 case EmployeeEntry.EMPLOYEE_ACTIVE:

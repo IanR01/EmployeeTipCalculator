@@ -34,7 +34,7 @@ public class EmployeeCursorAdapter extends CursorAdapter {
         int balanceColumnIndex = cursor.getColumnIndexOrThrow(EmployeeEntry.COLUMN_EMPLOYEE_BALANCE);
 
         String name = cursor.getString(nameColumnIndex);
-        String balance = String.valueOf(cursor.getDouble(balanceColumnIndex));
+        String balance = String.format("%.2f", cursor.getDouble(balanceColumnIndex));
 
         tvName.setText(name);
         tvBalance.setText(balance);
