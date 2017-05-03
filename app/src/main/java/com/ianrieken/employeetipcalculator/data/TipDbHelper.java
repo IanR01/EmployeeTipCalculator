@@ -40,7 +40,7 @@ public class TipDbHelper extends SQLiteOpenHelper {
                 + RegisterEntry.COLUMN_REGISTER_DATE + " TEXT NOT NULL, "
                 + RegisterEntry.COLUMN_REGISTER_AMOUNT + " INTEGER NOT NULL, "
                 + RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS + " TEXT NOT NULL, "
-                + RegisterEntry.COLUMN_REGISTER_NAMES + " TEXT NOT NULL, "
+                + RegisterEntry.COLUMN_REGISTER_NAMES + " TEXT NOT NULL, " //TODO remove names from table, get them from employees table instead. Names can be changed
                 + RegisterEntry.COLUMN_REGISTER_NREMPLOYEES + " INTEGER NOT NULL, "
                 + RegisterEntry.COLUMN_REGISTER_DISTRIBUTION + " TEXT NOT NULL, "
                 + RegisterEntry.COLUMN_REGISTER_HOURS + " TEXT, "

@@ -121,12 +121,27 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_insert_dummy_data:
                 ContentValues values = new ContentValues();
                 Calendar rightNow = Calendar.getInstance();
+                Uri newUri;
 
                 switch (mViewPager.getCurrentItem()) {
                     case SECTION_TIP:
                         break;
                     case SECTION_PAYMENT:
-                        //TODO hier bezig, testen of er dummy data ingevoerd kan worden
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_TIMESTAMP_CREATED, rightNow.get(Calendar.DATE));
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_DATE, rightNow.get(Calendar.DATE));
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_AMOUNT, 100.50);
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS, "1,2,3,4");
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_NAMES, "Naam1,Naam2,Naam3,Naam4");
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_NREMPLOYEES, 4);
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_DISTRIBUTION, "10.50,40,25,25");
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_PAID, "1,1,1,1");
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_ACTION, TipContract.RegisterEntry.REGISTER_ACTION_PAYMENT);
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_REGISTERIDS, "1,2,3,4");
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_DESCRIPTION, "Beschrijving");
+
+                        newUri = getContentResolver().insert(TipContract.RegisterEntry.REGISTER_CONTENT_URI, values);
+                        Log.v(LOG_TAG, "New Uri inserted: " + newUri);
+
                         break;
                     case SECTION_EMPLOYEES:
                         values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_NAME, "Rish");
@@ -137,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.v(LOG_TAG, "Testdate = " + testDate);
                         values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_REGDATE, testDate);
 
-                        Uri newUri = getContentResolver().insert(TipContract.EmployeeEntry.EMPLOYEE_CONTENT_URI, values);
+                        newUri = getContentResolver().insert(TipContract.EmployeeEntry.EMPLOYEE_CONTENT_URI, values);
                         Log.v(LOG_TAG, "New Uri inserted: " + newUri);
                         break;
                 }
