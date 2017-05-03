@@ -62,12 +62,15 @@ public class PaymentFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        //TODO Dit kan netter: Tip en Payment moeten nu beide alles van elkaar ophalen. Kan dit niet in MainActivity gebeuren? Of anders enkel de voor dit fragment benodigde kolommen
         String[] projection = {
                 RegisterEntry._ID,
                 RegisterEntry.COLUMN_REGISTER_AMOUNT,
                 RegisterEntry.COLUMN_REGISTER_DATE,
                 RegisterEntry.COLUMN_REGISTER_NREMPLOYEES,
-                RegisterEntry.COLUMN_REGISTER_PAID
+                RegisterEntry.COLUMN_REGISTER_PAID,
+                RegisterEntry.COLUMN_REGISTER_ACTION,
+                RegisterEntry.COLUMN_REGISTER_DESCRIPTION
         };
         String selection = RegisterEntry.COLUMN_REGISTER_ACTION + "=?";
         String[] selectionArgs = new String[]{ String.valueOf(RegisterEntry.REGISTER_ACTION_PAYMENT)};

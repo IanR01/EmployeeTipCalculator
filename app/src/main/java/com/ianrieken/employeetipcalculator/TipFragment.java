@@ -71,7 +71,10 @@ public class TipFragment extends Fragment implements LoaderManager.LoaderCallbac
                 RegisterEntry._ID,
                 RegisterEntry.COLUMN_REGISTER_AMOUNT,
                 RegisterEntry.COLUMN_REGISTER_DATE,
-                RegisterEntry.COLUMN_REGISTER_NREMPLOYEES
+                RegisterEntry.COLUMN_REGISTER_NREMPLOYEES,
+                RegisterEntry.COLUMN_REGISTER_ACTION,
+                RegisterEntry.COLUMN_REGISTER_DESCRIPTION,
+                RegisterEntry.COLUMN_REGISTER_PAID
         };
         String selection = RegisterEntry.COLUMN_REGISTER_ACTION + "=?";
         String[] selectionArgs = new String[]{ String.valueOf(RegisterEntry.REGISTER_ACTION_TIP) };
