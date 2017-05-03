@@ -50,16 +50,21 @@ public class TipContract {
         public static final String COLUMN_REGISTER_DATE = "date";
         public static final String COLUMN_REGISTER_AMOUNT = "amount";
         public static final String COLUMN_REGISTER_EMPLOYEEIDS = "employeeids";
-        public static final String COLUMN_REGISTER_NAMES = "names";
+        public static final String COLUMN_REGISTER_NAMES = "names"; //TODO remove names from table; only save ID's and retrieve names from database
         public static final String COLUMN_REGISTER_NREMPLOYEES = "nremployees";
         public static final String COLUMN_REGISTER_DISTRIBUTION = "distribution";
         public static final String COLUMN_REGISTER_HOURS = "hours";
-        public static final String COLUMN_REGISTER_PAID = "paid";
+        public static final String COLUMN_REGISTER_PAID = "paid"; //TODO: maybe remove paid from table? Can be calculated from distribution and hours. Or use in case of ACTION_PAYMENT instead
         public static final String COLUMN_REGISTER_ACTION = "action";
         public static final String COLUMN_REGISTER_PAYMENTID = "paymentid";
+        public static final String COLUMN_REGISTER_REGISTERIDS = "registerids";
 
         public static final int REGISTER_ACTION_TIP = 1;
         public static final int REGISTER_ACTION_PAYMENT = 2;
+
+        public static final int REGISTER_PAYMENT_PENDING = 1;
+        public static final int REGISTER_PAYMENT_COMPLETED = 2;
+        public static final int REGISTER_PAYMENT_ALL_PAID = 3;
 
         public static final Uri REGISTER_CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_REGISTER);
 
@@ -74,9 +79,9 @@ public class TipContract {
         public static final String COLUMN_PAYMENT_TIMESTAMP_CREATED = "timestamp_created";
         public static final String COLUMN_PAYMENT_TIMESTAMP_UPDATED = "timestamp_updated";
         public static final String COLUMN_PAYMENT_EMPLOYEEIDS = "employeeids";
-        public static final String COLUMN_PAYMENT_PAYED = "payed";
+        public static final String COLUMN_PAYMENT_PAID = "paid";
         public static final String COLUMN_PAYMENT_PAYMENT_DATE = "date";
-        public static final String COLUMN_PAYMENT_UNTIL_DATE = "until_date";
+        public static final String COLUMN_PAYMENT_REGISTERIDS = "registerids";
         public static final String COLUMN_PAYMENT_DESCRIPTION = "description";
 
         public static final int PAYMENT_PENDING = 1;

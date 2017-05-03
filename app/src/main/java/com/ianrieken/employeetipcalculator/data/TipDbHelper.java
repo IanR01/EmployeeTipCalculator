@@ -28,7 +28,7 @@ public class TipDbHelper extends SQLiteOpenHelper {
                 + EmployeeEntry.COLUMN_EMPLOYEE_NAME + " TEXT NOT NULL, "
                 + EmployeeEntry.COLUMN_EMPLOYEE_BALANCE + " INTEGER NOT NULL DEFAULT 0, "
                 + EmployeeEntry.COLUMN_EMPLOYEE_EARNED + " INTEGER NOT NULL DEFAULT 0, "
-                + EmployeeEntry.COLUMN_EMPLOYEE_ACTIVE + " INTEGER NOT NULL DEFAULT 1, "
+                + EmployeeEntry.COLUMN_EMPLOYEE_ACTIVE + " INTEGER NOT NULL DEFAULT " + EmployeeEntry.EMPLOYEE_ACTIVE + ", "
                 + EmployeeEntry.COLUMN_EMPLOYEE_MEMO + " TEXT, "
                 + EmployeeEntry.COLUMN_EMPLOYEE_REGDATE + " TEXT, "
                 + EmployeeEntry.COLUMN_EMPLOYEE_COUNT + " INTEGER NOT NULL DEFAULT 0);";
@@ -44,23 +44,25 @@ public class TipDbHelper extends SQLiteOpenHelper {
                 + RegisterEntry.COLUMN_REGISTER_NREMPLOYEES + " INTEGER NOT NULL, "
                 + RegisterEntry.COLUMN_REGISTER_DISTRIBUTION + " TEXT NOT NULL, "
                 + RegisterEntry.COLUMN_REGISTER_HOURS + " TEXT, "
-                + RegisterEntry.COLUMN_REGISTER_PAID + " TEXT NOT NULL, "
+                + RegisterEntry.COLUMN_REGISTER_PAID + " TEXT NOT NULL, " // Array of PAYMENT_PENDING and PAYMENT_COMPLETED when not everyone is paid, else the value is just PAYMENT_ALL_PAID
                 + RegisterEntry.COLUMN_REGISTER_ACTION + " INTEGER NOT NULL DEFAULT 0, "
-                + RegisterEntry.COLUMN_REGISTER_PAYMENTID + " INTEGER);";
+                + RegisterEntry.COLUMN_REGISTER_PAYMENTID + " INTEGER NOT NULL DEFAULT 0, "
+                + RegisterEntry.COLUMN_REGISTER_REGISTERIDS + " TEXT);"; // Only used when a payment is registered, ACTION_PAYMENT
 
+        //Getting rid of this table:
         String SQL_CREATE_PAYMENTS_TABLE = "CREATE TABLE " + PaymentEntry.TABLE_NAME + " ("
                 + PaymentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + PaymentEntry.COLUMN_PAYMENT_TIMESTAMP_CREATED + " INTEGER NOT NULL, "
                 + PaymentEntry.COLUMN_PAYMENT_TIMESTAMP_UPDATED + " INTEGER, "
                 + PaymentEntry.COLUMN_PAYMENT_EMPLOYEEIDS + " TEXT NOT NULL, "
-                + PaymentEntry.COLUMN_PAYMENT_PAYED + " INTEGER NOT NULL DEFAULT 1, "
+                + PaymentEntry.COLUMN_PAYMENT_PAID + " INTEGER NOT NULL DEFAULT 1, " //getting value PAID when all employees got their money
                 + PaymentEntry.COLUMN_PAYMENT_PAYMENT_DATE + " TEXT NOT NULL, "
-                + PaymentEntry.COLUMN_PAYMENT_UNTIL_DATE + " TEXT, "
+                + PaymentEntry.COLUMN_PAYMENT_REGISTERIDS + " TEXT NOT NULL, "
                 + PaymentEntry.COLUMN_PAYMENT_DESCRIPTION + " TEXT NOT NULL);";
 
         db.execSQL(SQL_CREATE_EMPLOYEES_TABLE);
         db.execSQL(SQL_CREATE_REGISTER_TABLE);
-        db.execSQL(SQL_CREATE_PAYMENTS_TABLE);
+        // TODO remove creation of payments table, everything is gonna be in the REGISTER table: db.execSQL(SQL_CREATE_PAYMENTS_TABLE);
     }
 
     @Override
