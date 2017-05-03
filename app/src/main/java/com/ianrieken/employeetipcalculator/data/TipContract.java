@@ -58,6 +58,7 @@ public class TipContract {
         public static final String COLUMN_REGISTER_ACTION = "action";
         public static final String COLUMN_REGISTER_PAYMENTID = "paymentid";
         public static final String COLUMN_REGISTER_REGISTERIDS = "registerids";
+        public static final String COLUMN_REGISTER_DESCRIPTION = "description";
 
         public static final int REGISTER_ACTION_TIP = 1;
         public static final int REGISTER_ACTION_PAYMENT = 2;

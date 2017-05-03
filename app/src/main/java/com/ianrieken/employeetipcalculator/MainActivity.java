@@ -120,14 +120,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_insert_dummy_data:
                 ContentValues values = new ContentValues();
+                Calendar rightNow = Calendar.getInstance();
 
                 switch (mViewPager.getCurrentItem()) {
                     case SECTION_TIP:
                         break;
                     case SECTION_PAYMENT:
+                        //TODO hier bezig, testen of er dummy data ingevoerd kan worden
                         break;
                     case SECTION_EMPLOYEES:
-                        Calendar rightNow = Calendar.getInstance();
                         values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_NAME, "Rish");
                         values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_BALANCE, 12.35);
                         values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_ACTIVE, TipContract.EmployeeEntry.EMPLOYEE_INACTIVE);

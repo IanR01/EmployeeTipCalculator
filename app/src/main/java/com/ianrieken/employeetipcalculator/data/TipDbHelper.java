@@ -47,7 +47,8 @@ public class TipDbHelper extends SQLiteOpenHelper {
                 + RegisterEntry.COLUMN_REGISTER_PAID + " TEXT NOT NULL, " // Array of PAYMENT_PENDING and PAYMENT_COMPLETED when not everyone is paid, else the value is just PAYMENT_ALL_PAID
                 + RegisterEntry.COLUMN_REGISTER_ACTION + " INTEGER NOT NULL DEFAULT 0, "
                 + RegisterEntry.COLUMN_REGISTER_PAYMENTID + " INTEGER NOT NULL DEFAULT 0, "
-                + RegisterEntry.COLUMN_REGISTER_REGISTERIDS + " TEXT);"; // Only used when a payment is registered, ACTION_PAYMENT
+                + RegisterEntry.COLUMN_REGISTER_REGISTERIDS + " TEXT, " // Only used when a payment is registered, ACTION_PAYMENT
+                + RegisterEntry.COLUMN_REGISTER_DESCRIPTION + " TEXT);";
 
         //Getting rid of this table:
         String SQL_CREATE_PAYMENTS_TABLE = "CREATE TABLE " + PaymentEntry.TABLE_NAME + " ("
