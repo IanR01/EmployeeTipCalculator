@@ -14,14 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
-import com.ianrieken.employeetipcalculator.data.TipContract;
 import com.ianrieken.employeetipcalculator.data.TipContract.RegisterEntry;
-
-import java.util.ArrayList;
 
 
 /**
@@ -77,11 +73,14 @@ public class TipFragment extends Fragment implements LoaderManager.LoaderCallbac
                 RegisterEntry.COLUMN_REGISTER_DATE,
                 RegisterEntry.COLUMN_REGISTER_NREMPLOYEES
         };
+        String selection = RegisterEntry.COLUMN_REGISTER_ACTION + "=?";
+        String[] selectionArgs = new String[]{ String.valueOf(RegisterEntry.REGISTER_ACTION_TIP) };
+
         return new CursorLoader(getContext(),
                 RegisterEntry.REGISTER_CONTENT_URI,
                 projection,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 null);
     }
 

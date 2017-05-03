@@ -9,4 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <RelativeLayout
+        android:id="@+id/empty_view_payment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Druk op de knop rechtsonder om een nieuwe uitbetaling aan te maken"/>
+        <!-- TODO insert proper emptyview -->
+    </RelativeLayout>
+
 </FrameLayout>
