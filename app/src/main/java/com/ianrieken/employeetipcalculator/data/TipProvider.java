@@ -300,4 +300,14 @@ public class TipProvider extends ContentProvider {
 
         return rowsUpdated;
     }
+
+    //TODO implement two functions below
+    public String arrayToString(String[] array){
+        String string = "";
+        return string;
+    }
+
+    public String[] stringToArray(String string){
+        return new String[] { "" };
+    }
 }

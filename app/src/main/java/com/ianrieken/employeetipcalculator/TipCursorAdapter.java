@@ -63,7 +63,7 @@ public class TipCursorAdapter extends CursorAdapter {
                     title = cursor.getString(descriptionColumnIndex);
                 }
                 String paid = cursor.getString(paidColumnIndex);
-                subtitle = paid;
+                subtitle = generatePaidDescription(paid);
                 //TODO Format subtitle string something like: 3/4 paid
                 break;
             default:
@@ -74,5 +74,20 @@ public class TipCursorAdapter extends CursorAdapter {
         tvTitle.setText(title);
         tvSubtitle.setText(subtitle);
         tvAmount.setText(amount);
+    }
+
+    private String generatePaidDescription(String paidString) {
+        String[] paidArray = paidString.split(",");
+        int total = paidArray.length;
+        int paid = 0;
+
+        for(int i=0; i<total; i++) {
+            if(paidArray[i].equals("1")) {
+                paid++;
+            }
+        }
+
+        //TODO fix hardcoded string. Cannot retrieve string resources from here
+        return paid + "/" + total + " werknemers uitbetaald";
     }
 }

@@ -129,21 +129,23 @@ public class MainActivity extends AppCompatActivity {
                     case SECTION_PAYMENT:
                         values.put(TipContract.RegisterEntry.COLUMN_REGISTER_TIMESTAMP_CREATED, rightNow.get(Calendar.DATE));
                         values.put(TipContract.RegisterEntry.COLUMN_REGISTER_DATE, rightNow.get(Calendar.DATE));
-                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_AMOUNT, 100.50);
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_AMOUNT, 45.80);
                         values.put(TipContract.RegisterEntry.COLUMN_REGISTER_EMPLOYEEIDS, "1,2,3,4");
                         values.put(TipContract.RegisterEntry.COLUMN_REGISTER_NAMES, "Naam1,Naam2,Naam3,Naam4");
                         values.put(TipContract.RegisterEntry.COLUMN_REGISTER_NREMPLOYEES, 4);
                         values.put(TipContract.RegisterEntry.COLUMN_REGISTER_DISTRIBUTION, "10.50,40,25,25");
-                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_PAID, "1,1,1,1");
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_PAID, "1,0,1,1");
                         values.put(TipContract.RegisterEntry.COLUMN_REGISTER_ACTION, TipContract.RegisterEntry.REGISTER_ACTION_PAYMENT);
                         values.put(TipContract.RegisterEntry.COLUMN_REGISTER_REGISTERIDS, "1,2,3,4");
-                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_DESCRIPTION, "Beschrijving");
+                        values.put(TipContract.RegisterEntry.COLUMN_REGISTER_DESCRIPTION, "Wat gebeurt er met een beschrijving die veel te lang is? Loopt die het scherm uit of gaat deze automatisch door naar de volgende regel?");
 
                         newUri = getContentResolver().insert(TipContract.RegisterEntry.REGISTER_CONTENT_URI, values);
                         Log.v(LOG_TAG, "New Uri inserted: " + newUri);
 
                         break;
                     case SECTION_EMPLOYEES:
+                        //TODO remove:
+                        /*
                         values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_NAME, "Rish");
                         values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_BALANCE, 12.35);
                         values.put(TipContract.EmployeeEntry.COLUMN_EMPLOYEE_ACTIVE, TipContract.EmployeeEntry.EMPLOYEE_INACTIVE);
@@ -154,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
                         newUri = getContentResolver().insert(TipContract.EmployeeEntry.EMPLOYEE_CONTENT_URI, values);
                         Log.v(LOG_TAG, "New Uri inserted: " + newUri);
+                        */
                         break;
                 }
                 return true;

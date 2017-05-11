@@ -18,7 +18,7 @@
             android:id="@+id/textview_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="16sp"
             tools:text="Zondag 26 maart" />
 
         <TextView
@@ -26,9 +26,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/darker_gray"
-            android:textSize="14dp"
+            android:textSize="14sp"
             tools:text="5 personen - 2,89 p.p." />
     </LinearLayout>
+
+    <!-- TODO Long texts/descriptions from upper LinearLayout overlap with the textview below. Fix -->
 
     <TextView
         android:id="@+id/textview_amount"
@@ -36,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textSize="24dp"
+        android:textSize="24sp"
         tools:text="24,73" />
 
 </RelativeLayout>

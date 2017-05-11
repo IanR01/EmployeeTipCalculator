@@ -35,6 +35,9 @@
     <string name="editor_delete_tip_successful">Registratie verwijderd</string>
     <string name="action_delete">Verwijderen</string>
 
+    <!-- Payment fragment activity -->
+    <string name="number_employees_paid">uitbetaald</string>
+
     <!-- New payment activity -->
     <string name="title_payment_new">Nieuwe uitbetaling</string>
     <string name="payment_new_description">Omschrijving…</string>
