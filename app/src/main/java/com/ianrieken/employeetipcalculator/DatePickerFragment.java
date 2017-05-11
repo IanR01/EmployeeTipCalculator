@@ -34,7 +34,17 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        TextView dateTextView = (TextView) getActivity().findViewById(R.id.date_textview);
-        dateTextView.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
+        switch (getTag()) {
+            case TipEditActivity.DATEPICKER_TAG:
+                TextView dateTextView = (TextView) getActivity().findViewById(R.id.date_textview);
+                dateTextView.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
+                break;
+            case PaymentNewActivity.DATEPICKER_TAG:
+                //TODO What happens next?
+                break;
+            default:
+                Log.e(LOG_TAG, "DatePickerFragment received an unknown tagname");
+                break;
+        }
     }
 }

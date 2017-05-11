@@ -40,6 +40,8 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
 
     private static final int EDIT_TIP_LOADER = 1;
 
+    public static final String DATEPICKER_TAG = "tipEditDatePicker";
+
     private Uri mCurrentTipUri;
 
     static final ArrayList<AddedEmployee> addedEmployees = new ArrayList<AddedEmployee>();
@@ -104,7 +106,7 @@ public class TipEditActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onClick(View v) {
                 DatePickerFragment newFragment = new DatePickerFragment();
-                newFragment.show(getSupportFragmentManager(), "datePicker");
+                newFragment.show(getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
 

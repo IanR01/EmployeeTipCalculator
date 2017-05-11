@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 public class PaymentNewActivity extends AppCompatActivity {
 
     private final String LOG_TAG = this.getClass().getSimpleName();
+
+    public final static String DATEPICKER_TAG = "newPaymentDatePicker";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +28,17 @@ public class PaymentNewActivity extends AppCompatActivity {
         payments.add(new Payment(false, "Rishi", "Subtitle 2", 2.35));
 
         final PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentNewActivity.this, payments);
-
         ListView paymentListView = (ListView) findViewById(R.id.payment_new_listview);
-
         paymentListView.setAdapter(paymentAdapter);
+
+        LinearLayout dateToPickerLayout = (LinearLayout) findViewById(R.id.payment_new_date_to);
+        dateToPickerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.show(getSupportFragmentManager(), DATEPICKER_TAG);
+            }
+        });
     }
 
     @Override
