@@ -32,7 +32,7 @@ public class PaymentAdapter extends ArrayAdapter<Payment> {
         CheckBox checkedCheckBox = (CheckBox) listItemView.findViewById(R.id.payment_new_checkbox);
         checkedCheckBox.setChecked(currentPayment.isChecked());
 
-        TextView nameTextView = (TextView) listItemView.findViewById(R.id.payment_name_textview);
+        TextView nameTextView = (TextView) listItemView.findViewById(R.id.payment_title_textview);
         nameTextView.setText(currentPayment.getName());
 
         TextView subTitleTextView = (TextView) listItemView.findViewById(R.id.payment_subtitle_textview);
